@@ -9,8 +9,7 @@ const AuthContext = createContext();
 function getAuthHeaders() {
   const token = Cookies.get('token');
   return {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`
+    'Authorization': `${token}`
   };
 }
 
@@ -57,6 +56,7 @@ function AuthProvider({ children }) {
       if (token) {
         Cookies.set('token', token, { secure: true, sameSite: 'strict' });
       }
+      localStorage.setItem('user', JSON.stringify(user));
 
       setUser(newUser);
       return { success: true };
