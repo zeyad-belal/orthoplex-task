@@ -8,14 +8,14 @@ export default function Dashboard() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const data = await getUserData(user._id);
         setUserData(data);
         setError(null);
-      } catch {
+      } catch (error) {
+        console.error(error);
         setError("Failed to fetch user data");
       } finally {
         setLoading(false);
@@ -68,6 +68,20 @@ export default function Dashboard() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            {/* Random Dashboard Content */}
+            <div className="card bg-gradient-to-br from-primary-500 to-primary-600 text-white">
+              <h2 className="text-xl font-semibold">Welcome Back!</h2>
+              <p className="mt-2">
+                You are successfully logged into your account.
+              </p>
+              <div className="mt-4 p-4 bg-white/10 rounded-lg">
+                <p className="text-sm">
+                  Last login: {new Date().toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+
             {/* User Profile Card */}
             <div className="card">
               <div className="flex items-center space-x-4">
@@ -95,19 +109,6 @@ export default function Dashboard() {
                   </label>
                   <p className="mt-1 text-gray-900">{userData?.email}</p>
                 </div>
-              </div>
-            </div>
-
-            {/* Additional Dashboard Content */}
-            <div className="card bg-gradient-to-br from-primary-500 to-primary-600 text-white">
-              <h2 className="text-xl font-semibold">Welcome Back!</h2>
-              <p className="mt-2">
-                You are successfully logged into your account.
-              </p>
-              <div className="mt-4 p-4 bg-white/10 rounded-lg">
-                <p className="text-sm">
-                  Last login: {new Date().toLocaleDateString()}
-                </p>
               </div>
             </div>
           </div>

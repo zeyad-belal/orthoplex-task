@@ -1,7 +1,11 @@
+import Cookies from 'js-cookie'
+
 export function getAuthHeaders() {
   const token = Cookies.get("token");
   return {
     Authorization: `${token}`,
+    "Content-Type": "application/json"
+
   };
 }
 

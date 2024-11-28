@@ -73,9 +73,11 @@ function AuthProvider({ children }) {
   };
 
   const getUserData = async (userId) => {
+    console.log('fired')
     const response = await axios.get(`${API_URL}/users/${userId}`, {
       headers: getAuthHeaders(),
     });
+
     return response.data.user;
   };
 
@@ -83,6 +85,7 @@ function AuthProvider({ children }) {
     const response = await axios.put(`${API_URL}/users/${userId}`, data, {
       headers: getAuthHeaders(),
     });
+
     return response.data.user;
   };
 
