@@ -4,6 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { getAuthHeaders } from "./../utils/utils";
 
+
 const API_URL = import.meta.env.VITE_APP_API;
 const AuthContext = createContext();
 
@@ -70,22 +71,27 @@ function AuthProvider({ children }) {
     Cookies.remove("token");
     localStorage.removeItem("user");
     setUser(null);
+
   };
 
   const getUserData = async (userId) => {
-    console.log('fired')
     const response = await axios.get(`${API_URL}/users/${userId}`, {
       headers: getAuthHeaders(),
     });
-
     return response.data.user;
+  };
+
+  const getAllUsers = async () => {
+    const response = await axios.get(`${API_URL}/users`, {
+      headers: getAuthHeaders(),
+    });
+    return response.data;
   };
 
   const updateUserData = async (userId, data) => {
     const response = await axios.put(`${API_URL}/users/${userId}`, data, {
       headers: getAuthHeaders(),
     });
-
     return response.data.user;
   };
 
@@ -105,6 +111,7 @@ function AuthProvider({ children }) {
         logout,
         loading,
         getUserData,
+        getAllUsers,
         updateUserData,
         getCurrentUser,
       }}

@@ -1,15 +1,14 @@
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 
 export function getAuthHeaders() {
   const token = Cookies.get("token");
   return {
     Authorization: `${token}`,
-    "Content-Type": "application/json"
-
+    "Content-Type": "application/json",
   };
 }
 
-export const validateField = (name, value , formData) => {
+export const validateField = (name, value, formData) => {
   switch (name) {
     case "firstName":
     case "lastName":
