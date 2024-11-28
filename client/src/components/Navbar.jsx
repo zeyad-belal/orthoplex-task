@@ -18,7 +18,6 @@ export default function Navbar() {
   }
 
 
-
   return (
     <nav className="bg-white shadow-custom">
       <div className="container-custom">

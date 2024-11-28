@@ -23,7 +23,12 @@ export default function Login() {
     try {
       const result = await login(email, password, rememberMe);
       if (result.success) {
-        navigate('/dashboard');
+        // simulate loading 
+        setTimeout(() => {
+          navigate('/dashboard');
+        
+          setIsLoading(false);
+        }, 2000);
       } else {
         setError(result.error);
       }
@@ -31,7 +36,10 @@ export default function Login() {
       setError('An unexpected error occurred');
       console.error('Login error:', error);
     } finally {
-      setIsLoading(false);
+      // simulate loading 
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
     }
   };
 
@@ -56,7 +64,6 @@ export default function Login() {
                 id="email"
                 name="email"
                 type="email"
-                autoComplete="email"
                 required
                 className="input-field pl-10"
                 placeholder="Email address"
@@ -74,7 +81,6 @@ export default function Login() {
                 id="password"
                 name="password"
                 type="password"
-                autoComplete="current-password"
                 required
                 className="input-field pl-10"
                 placeholder="Password"

@@ -9,7 +9,7 @@ import { useNavigate } from "react-router";
 export default function Dashboard() {
   const token = Cookies.get("token");
   const navigate = useNavigate();
-  const { user: signedUser, getUserData, getAllUsers } = useAuth();
+  const { user: signedUser, getAllUsers } = useAuth();
 
   const [allUsers, setAllUsers] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,12 +28,12 @@ export default function Dashboard() {
     }
   };
 
-  // get user and all users data
+  // get all users data
   useEffect(() => {
     if (signedUser?._id) {
       fetchAllUsers();
     }
-  }, [signedUser, getUserData]);
+  }, [signedUser]);
 
   // handle refresh without remember me case
   useEffect(() => {
