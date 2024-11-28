@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { User, LogOut } from 'lucide-react';
-import { userApi } from '../utils/api';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function Dashboard() {
-  const { user, logout } = useAuth();
+  const { user, logout, getUserData } = useAuth();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,8 +12,8 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await userApi.getUserById(user._id);
-        setUserData(response.data.user);
+        const data = await getUserData(user._id);
+        setUserData(data);
         setError(null);
       } catch {
         setError('Failed to fetch user data');
@@ -25,7 +25,7 @@ export default function Dashboard() {
     if (user?._id) {
       fetchUserData();
     }
-  }, [user]);
+  }, [user, getUserData]);
 
   const handleLogout = () => {
     logout();
@@ -34,7 +34,7 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+        <LoadingSpinner />
       </div>
     );
   }

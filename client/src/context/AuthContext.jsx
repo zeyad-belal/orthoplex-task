@@ -1,8 +1,18 @@
 /* eslint-disable react/prop-types */
 import { createContext, useContext, useState, useEffect } from 'react';
-import { authApi } from '../utils/api';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
+const API_URL = import.meta.env.VITE_APP_API;
 const AuthContext = createContext();
+
+function getAuthHeaders() {
+  const token = Cookies.get('token');
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  };
+}
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -18,8 +28,12 @@ function AuthProvider({ children }) {
 
   const login = async (email, password, rememberMe) => {
     try {
-      const response = await authApi.login({ email, password, rememberMe });
-      const { user } = response.data;
+      const response = await axios.post(`${API_URL}/users/login`, { email, password, rememberMe });
+      const { user, token } = response.data;
+      
+      if (token) {
+        Cookies.set('token', token, { secure: true, sameSite: 'strict' });
+      }
       
       if (rememberMe) {
         localStorage.setItem('user', JSON.stringify(user));
@@ -37,8 +51,12 @@ function AuthProvider({ children }) {
 
   const signup = async (userData) => {
     try {
-      const response = await authApi.signup(userData);
-      const { newUser } = response.data;
+      const response = await axios.post(`${API_URL}/users/signup`, userData);
+      const { newUser, token } = response.data;
+      
+      if (token) {
+        Cookies.set('token', token, { secure: true, sameSite: 'strict' });
+      }
 
       setUser(newUser);
       return { success: true };
@@ -51,8 +69,30 @@ function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    authApi.logout();
+    Cookies.remove('token');
+    localStorage.removeItem('user');
     setUser(null);
+  };
+
+  const getUserData = async (userId) => {
+    const response = await axios.get(`${API_URL}/users/${userId}`, {
+      headers: getAuthHeaders()
+    });
+    return response.data.user;
+  };
+
+  const updateUserData = async (userId, data) => {
+    const response = await axios.put(`${API_URL}/users/${userId}`, data, {
+      headers: getAuthHeaders()
+    });
+    return response.data.user;
+  };
+
+  const getCurrentUser = async () => {
+    const response = await axios.get(`${API_URL}/users/me`, {
+      headers: getAuthHeaders()
+    });
+    return response.data.user;
   };
 
   return (
@@ -62,7 +102,10 @@ function AuthProvider({ children }) {
         login,
         signup,
         logout,
-        loading
+        loading,
+        getUserData,
+        updateUserData,
+        getCurrentUser
       }}
     >
       {!loading && children}
