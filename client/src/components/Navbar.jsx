@@ -17,17 +17,16 @@ export default function Navbar() {
     navigate("/login");
   }
 
-
   return (
     <nav className="bg-white shadow-custom">
       <div className="container-custom">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-8">
             <h1 className="text-2xl font-bold text-primary-600">Dashboard</h1>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-1">
               <Link
                 to="/dashboard"
-                className={`flex items-center px-3 py-2 rounded-lg transition-colors ${
+                className={`flex items-center px-2 py-2 rounded-lg transition-colors ${
                   isActive("/dashboard")
                     ? "text-primary-600 bg-primary-50"
                     : "text-gray-600 hover:text-primary-600 hover:bg-gray-50"
@@ -38,7 +37,7 @@ export default function Navbar() {
               </Link>
               <Link
                 to="/about"
-                className={`flex items-center px-3 py-2 rounded-lg transition-colors ${
+                className={`flex items-center px-2 py-2 rounded-lg transition-colors ${
                   isActive("/about")
                     ? "text-primary-600 bg-primary-50"
                     : "text-gray-600 hover:text-primary-600 hover:bg-gray-50"
