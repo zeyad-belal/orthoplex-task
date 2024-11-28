@@ -5,29 +5,21 @@ import { AppError } from "../utils/AppError.js";
 
 // registration
 const signUp = async (req, res, next) => {
-  const {
-    first_name,
-    last_name,
-    email,
-    password,
-  } = req.body;
+  const { firstName, lastName, email, password } = req.body;
   if (!email || !password)
     return next(new AppError("email and password required", 401));
 
   try {
     const newUser = await User.create({
-      first_name,
-      last_name,
+      firstName,
+      lastName,
       email,
       password,
     });
     newUser.password = undefined;
 
     const user = await User.findOne({ email });
-    const token = jwt.sign(
-      { id: user._id},
-      process.env.JWT_SECRET
-    );
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
     res.send({ message: "user created successfully", newUser, token });
   } catch (error) {
@@ -86,11 +78,11 @@ const getUserById = async (req, res, next) => {
 // update user info
 const updateUser = async (req, res, next) => {
   const { id } = req.user;
-  const { first_name, last_name, email } = req.body;
+  const { firstName, lastName, email } = req.body;
 
   const user = await User.findByIdAndUpdate(
     id,
-    { first_name, last_name, email },
+    { firstName, lastName, email },
     { new: true }
   );
 
@@ -105,11 +97,4 @@ const deleteUser = async (req, res) => {
   res.send({ user });
 };
 
-export {
-  signUp,
-  getUserById,
-  getAllUsers,
-  updateUser,
-  deleteUser,
-  login,
-};
+export { signUp, getUserById, getAllUsers, updateUser, deleteUser, login };

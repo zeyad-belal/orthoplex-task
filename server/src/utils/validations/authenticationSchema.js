@@ -1,5 +1,5 @@
-import Joi from 'joi';
-import { AppError } from '../AppError.js';
+import Joi from "joi";
+import { AppError } from "../AppError.js";
 
 const loginSchema = Joi.object({
   email: Joi.string().email().required(),
@@ -10,8 +10,8 @@ const loginSchema = Joi.object({
 const signupSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).max(20).required(),
-  first_name: Joi.string().min(3).max(20).required(),
-  last_name: Joi.string().min(3).max(20).required(),
+  firstName: Joi.string().min(3).max(20).required(),
+  lastName: Joi.string().min(3).max(20).required(),
 });
 
 const loginValidation = (req, res, next) => {

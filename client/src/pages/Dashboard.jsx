@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { User, LogOut } from 'lucide-react';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import { User, LogOut } from "lucide-react";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function Dashboard() {
   const { user, logout, getUserData } = useAuth();
@@ -16,7 +16,7 @@ export default function Dashboard() {
         setUserData(data);
         setError(null);
       } catch {
-        setError('Failed to fetch user data');
+        setError("Failed to fetch user data");
       } finally {
         setLoading(false);
       }
@@ -60,7 +60,10 @@ export default function Dashboard() {
       {/* Main Content */}
       <main className="container-custom py-8">
         {error ? (
-          <div className="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded-lg" role="alert">
+          <div
+            className="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded-lg"
+            role="alert"
+          >
             <p>{error}</p>
           </div>
         ) : (
@@ -76,14 +79,20 @@ export default function Dashboard() {
                   <p className="text-gray-600">Your personal details</p>
                 </div>
               </div>
-              
+
               <div className="mt-6 space-y-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Full Name</label>
-                  <p className="mt-1 text-gray-900">{userData?.first_name} {userData?.last_name}</p>
+                  <label className="text-sm font-medium text-gray-500">
+                    Full Name
+                  </label>
+                  <p className="mt-1 text-gray-900">
+                    {userData?.firstName} {userData?.lastName}
+                  </p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Email</label>
+                  <label className="text-sm font-medium text-gray-500">
+                    Email
+                  </label>
                   <p className="mt-1 text-gray-900">{userData?.email}</p>
                 </div>
               </div>
@@ -92,9 +101,13 @@ export default function Dashboard() {
             {/* Additional Dashboard Content */}
             <div className="card bg-gradient-to-br from-primary-500 to-primary-600 text-white">
               <h2 className="text-xl font-semibold">Welcome Back!</h2>
-              <p className="mt-2">You are successfully logged into your account.</p>
+              <p className="mt-2">
+                You are successfully logged into your account.
+              </p>
               <div className="mt-4 p-4 bg-white/10 rounded-lg">
-                <p className="text-sm">Last login: {new Date().toLocaleDateString()}</p>
+                <p className="text-sm">
+                  Last login: {new Date().toLocaleDateString()}
+                </p>
               </div>
             </div>
           </div>

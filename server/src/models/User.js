@@ -1,40 +1,40 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-  first_name:{
+  firstName: {
     type: String,
-    required:true
+    required: true,
   },
-  last_name:{
+  lastName: {
     type: String,
-    required:true
+    required: true,
   },
-  email:{
+  email: {
     type: String,
-    required:true,
-    unique:true
+    required: true,
+    unique: true,
   },
-  password:{
+  password: {
     type: String,
-    required:true,
-    select:false
+    required: true,
+    select: false,
   },
   created_at: {
     type: Date,
-    default: Date.now()
+    default: Date.now(),
   },
 });
 
 //hashing password in  mongoose middleware before saving user in db(document middleware)
-userSchema.pre('save', async function(){
+userSchema.pre("save", async function () {
   const currentUser = this;
-  if(currentUser.isModified('password')){
-    const hashedPassword = await bcrypt.hash(currentUser.password,10);
+  if (currentUser.isModified("password")) {
+    const hashedPassword = await bcrypt.hash(currentUser.password, 10);
     currentUser.password = hashedPassword;
   }
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 export { User };

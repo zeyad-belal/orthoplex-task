@@ -1,24 +1,18 @@
 /* eslint-disable react/prop-types */
-import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { getAuthHeaders } from "./../utils/utils";
 
 const API_URL = import.meta.env.VITE_APP_API;
 const AuthContext = createContext();
-
-function getAuthHeaders() {
-  const token = Cookies.get('token');
-  return {
-    'Authorization': `${token}`
-  };
-}
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('user');
+    const savedUser = localStorage.getItem("user");
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
@@ -27,15 +21,19 @@ function AuthProvider({ children }) {
 
   const login = async (email, password, rememberMe) => {
     try {
-      const response = await axios.post(`${API_URL}/users/login`, { email, password, rememberMe });
+      const response = await axios.post(`${API_URL}/users/login`, {
+        email,
+        password,
+        rememberMe,
+      });
       const { user, token } = response.data;
-      
+
       if (token) {
-        Cookies.set('token', token, { secure: true, sameSite: 'strict' });
+        Cookies.set("token", token, { secure: true, sameSite: "strict" });
       }
-      
+
       if (rememberMe) {
-        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem("user", JSON.stringify(user));
       }
 
       setUser(user);
@@ -43,7 +41,7 @@ function AuthProvider({ children }) {
     } catch (error) {
       return {
         success: false,
-        error: error.response?.data?.message || 'Login failed'
+        error: error.response?.data?.message || "Login failed",
       };
     }
   };
@@ -52,51 +50,51 @@ function AuthProvider({ children }) {
     try {
       const response = await axios.post(`${API_URL}/users/signup`, userData);
       const { newUser, token } = response.data;
-      
+
       if (token) {
-        Cookies.set('token', token, { secure: true, sameSite: 'strict' });
+        Cookies.set("token", token, { secure: true, sameSite: "strict" });
       }
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(newUser));
 
       setUser(newUser);
       return { success: true };
     } catch (error) {
       return {
         success: false,
-        error: error.response?.data?.message || 'Signup failed'
+        error: error.response?.data?.message || "Signup failed",
       };
     }
   };
 
   const logout = () => {
-    Cookies.remove('token');
-    localStorage.removeItem('user');
+    Cookies.remove("token");
+    localStorage.removeItem("user");
     setUser(null);
   };
 
   const getUserData = async (userId) => {
     const response = await axios.get(`${API_URL}/users/${userId}`, {
-      headers: getAuthHeaders()
+      headers: getAuthHeaders(),
     });
     return response.data.user;
   };
 
   const updateUserData = async (userId, data) => {
     const response = await axios.put(`${API_URL}/users/${userId}`, data, {
-      headers: getAuthHeaders()
+      headers: getAuthHeaders(),
     });
     return response.data.user;
   };
 
   const getCurrentUser = async () => {
     const response = await axios.get(`${API_URL}/users/me`, {
-      headers: getAuthHeaders()
+      headers: getAuthHeaders(),
     });
     return response.data.user;
   };
 
   return (
-    <AuthContext.Provider 
+    <AuthContext.Provider
       value={{
         user,
         login,
@@ -105,7 +103,7 @@ function AuthProvider({ children }) {
         loading,
         getUserData,
         updateUserData,
-        getCurrentUser
+        getCurrentUser,
       }}
     >
       {!loading && children}
@@ -116,7 +114,7 @@ function AuthProvider({ children }) {
 function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }
