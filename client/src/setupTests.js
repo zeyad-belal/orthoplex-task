@@ -1,4 +1,4 @@
-require('@testing-library/jest-dom');
+import '@testing-library/jest-dom';
 
 // Mock TextEncoder/TextDecoder
 const { TextEncoder, TextDecoder } = require('util');
@@ -38,7 +38,13 @@ jest.mock('js-cookie', () => ({
   remove: jest.fn(),
 }));
 
-// Mock import.meta.env
+// Mock axios
+jest.mock('axios');
+
+// Mock environment variables
+process.env.VITE_APP_API = 'http://localhost:5001/api';
+
+// Mock import.meta
 global.import = {
   meta: {
     env: {
@@ -46,6 +52,3 @@ global.import = {
     }
   }
 };
-
-// Mock process.env as backup for import.meta.env
-process.env.VITE_APP_API = 'http://localhost:5001/api';

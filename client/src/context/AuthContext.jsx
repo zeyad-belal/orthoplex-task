@@ -4,7 +4,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { getAuthHeaders } from "./../utils/utils";
 
-
 const API_URL = import.meta.env.VITE_APP_API;
 const AuthContext = createContext();
 
@@ -71,7 +70,6 @@ function AuthProvider({ children }) {
     Cookies.remove("token");
     localStorage.removeItem("user");
     setUser(null);
-
   };
 
   const getUserData = async (userId) => {
