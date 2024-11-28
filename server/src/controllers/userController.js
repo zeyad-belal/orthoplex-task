@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
-import User from "../models/User";
+import { User } from "../models/User.js";
 import jwt from "jsonwebtoken";
-import AppError from "../utils/AppError";
+import { AppError } from "../utils/AppError.js";
 
 // registration
 const signUp = async (req, res, next) => {
@@ -68,7 +68,6 @@ const login = async (req, res, next) => {
   res.send({ user, token });
 };
 
-
 //get all users
 const getAllUsers = async (req, res) => {
   const users = await User.find();
@@ -76,26 +75,24 @@ const getAllUsers = async (req, res) => {
 };
 
 //get user by id
-const getUserById = async (req, res,next) => {
+const getUserById = async (req, res, next) => {
   const { id } = req.params;
-  const user = await User.findById(id)
+  const user = await User.findById(id);
 
   if (!user) return next(new AppError("user not found", 404));
   res.send({ user });
 };
 
 // update user info
-const updateUser = async (req, res,next) => {
+const updateUser = async (req, res, next) => {
   const { id } = req.user;
   const { first_name, last_name, email } = req.body;
-
 
   const user = await User.findByIdAndUpdate(
     id,
     { first_name, last_name, email },
     { new: true }
   );
-
 
   res.send({ user });
 };
@@ -108,7 +105,7 @@ const deleteUser = async (req, res) => {
   res.send({ user });
 };
 
-module.exports = {
+export {
   signUp,
   getUserById,
   getAllUsers,

@@ -25,17 +25,16 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now()
   },
-})
+});
 
 //hashing password in  mongoose middleware before saving user in db(document middleware)
 userSchema.pre('save', async function(){
   const currentUser = this;
   if(currentUser.isModified('password')){
-    const hashedPassword = await bcrypt.hash(currentUser.password,10)
-    currentUser.password = hashedPassword
+    const hashedPassword = await bcrypt.hash(currentUser.password,10);
+    currentUser.password = hashedPassword;
   }
-})
+});
 
-
-const User = mongoose.model('User',userSchema);
-module.exports =User;
+const User = mongoose.model('User', userSchema);
+export { User };

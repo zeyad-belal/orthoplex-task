@@ -1,20 +1,21 @@
-import { router } from "express"
+import { Router } from "express";
 
-const {
+import {
   signUp,
   getUserById,
   getAllUsers,
   updateUser,
   deleteUser,
   login,
-} = require("../controllers/userController");
+} from "../controllers/userController.js";
 
-const {
+import {
   loginValidation,
   signupValidation
-} = require("../utils/validations/authenticationSchema");
-const verfiyUserToken = require("../middlewares/verfiyUserToken"); 
+} from "../utils/validations/authenticationSchema.js";
+import verfiyUserToken from "../middlewares/verfiyUserToken.js";
 
+const router = Router();
 
 // registration create new user
 router.post("/signup", signupValidation, signUp);
@@ -28,13 +29,11 @@ router.get("/", verfiyUserToken, getAllUsers);
 //get user by id
 router.get("/:id", verfiyUserToken, getUserById);
 
-
 // update user
 router.put("/:id", verfiyUserToken, updateUser);
 router.patch("/:id", verfiyUserToken, updateUser);
 
-
 // delete user
-router.delete("/:id", deleteUser);
+router.delete("/:id", verfiyUserToken, deleteUser);
 
-module.exports = router;
+export const usersRoutes = router;

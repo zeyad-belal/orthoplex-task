@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import AppError from '../AppError.js';
+import { AppError } from '../AppError.js';
 
 const loginSchema = Joi.object({
   email: Joi.string().email().required(),
@@ -12,7 +12,6 @@ const signupSchema = Joi.object({
   password: Joi.string().min(6).max(20).required(),
   first_name: Joi.string().min(3).max(20).required(),
   last_name: Joi.string().min(3).max(20).required(),
-  phone_number: Joi.string(),
 });
 
 const loginValidation = (req, res, next) => {
@@ -27,4 +26,4 @@ const signupValidation = (req, res, next) => {
   next();
 };
 
-module.exports = { loginValidation, signupValidation };
+export { loginValidation, signupValidation };
