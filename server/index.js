@@ -11,15 +11,21 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5001;
 
+// CORS configuration
+app.use(cors({
+  origin: 'http://localhost:5173', // Vite's default port
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 // parsing incoming requests
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
-app.use(cors());
 
-
-// Routes
-app.use("/users", usersRoutes);
+// Routes with /api prefix
+app.use("/api/users", usersRoutes);
 
 // Handle 404 routes
 app.use('*', (req, res) => {
