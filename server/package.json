@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "vercel-build": "echo hello"
   },
-  "keywords": [], 
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -18,7 +18,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "express-async-error": "^3.1.1",
+    "express-async-error": "^0.0.2",
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.3.0",
