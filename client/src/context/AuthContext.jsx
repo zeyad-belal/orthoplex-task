@@ -11,6 +11,7 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // sync user data with local storage
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {

@@ -67,7 +67,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Navigation */}
-        {isOpen && (
+        {isOpen ? (
           <div className="md:hidden py-4 space-y-2" data-testid="mobile-menu">
             {navLinks.map(({ path, icon: Icon, text }) => (
               <Link
@@ -95,7 +95,7 @@ export default function Navbar() {
               Logout
             </button>
           </div>
-        )}
+        ) : null}
       </div>
     </nav>
   );

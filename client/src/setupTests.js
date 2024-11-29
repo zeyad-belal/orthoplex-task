@@ -40,15 +40,3 @@ jest.mock('js-cookie', () => ({
 
 // Mock axios
 jest.mock('axios');
-
-// Mock environment variables
-process.env.VITE_APP_API = 'http://localhost:5001/api';
-
-// Mock import.meta
-global.import = {
-  meta: {
-    env: {
-      VITE_APP_API: 'http://localhost:5001/api'
-    }
-  }
-};
