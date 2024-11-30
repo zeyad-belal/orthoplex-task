@@ -13,11 +13,16 @@ const port = process.env.PORT || 5001;
 
 // CORS configuration
 app.use(cors({
-  origin: 'http://localhost:5173', // Vite's default port
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // Vite's default port
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  exposedHeaders: ['Content-Range', 'X-Content-Range'],
+  maxAge: 600 // Preflight results cache for 10 minutes
 }));
+
+// Enable pre-flight requests for all routes
+app.options('*', cors());
 
 // parsing incoming requests
 app.use(express.json());
