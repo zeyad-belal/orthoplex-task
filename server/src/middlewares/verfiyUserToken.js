@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/User.js";
 import { AppError } from "../utils/AppError.js";
 
-const verifyUserToken = async (req, res, next) => {
+const verfiyUserToken = async (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) return next(new AppError("please provide a token", 404));
@@ -17,4 +17,4 @@ const verifyUserToken = async (req, res, next) => {
   next();
 };
 
-export default verifyUserToken;
+export default verfiyUserToken;
