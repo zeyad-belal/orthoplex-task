@@ -13,7 +13,7 @@ const port = process.env.PORT || 5001;
 
 // CORS configuration
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://othoplextask.vercel.app'], // Vite's default port
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://orthoplex-task-lac.vercel.app'], // Vite's default port
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
