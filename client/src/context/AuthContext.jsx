@@ -22,7 +22,7 @@ function AuthProvider({ children }) {
 
   const login = async (email, password, rememberMe) => {
     try {
-      const response = await axios.post(`${API_URL}/users/login`, {
+      const response = await axios.post(`/users/login`, {
         email,
         password,
         rememberMe,
