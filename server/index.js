@@ -13,7 +13,7 @@ const port = process.env.PORT || 5001;
 
 // CORS configuration
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://orthoplex-task-lac.vercel.app'], // Vite's default port
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // Vite's default port
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
@@ -22,7 +22,7 @@ app.use(cors({
 }));
 
 // Enable pre-flight requests for all routes
-// app.options('*', cors());
+app.options('*', cors());
 
 // parsing incoming requests
 app.use(express.json());
@@ -33,12 +33,12 @@ app.use(morgan("dev"));
 app.use("/api/users", usersRoutes);
 
 // Handle 404 routes
-// app.use('*', (req, res) => {
-//   res.status(404).json({
-//     status: 404,
-//     message: 'Route not found'
-//   });
-// });
+app.use('*', (req, res) => {
+  res.status(404).json({
+    status: 404,
+    message: 'Route not found'
+  });
+});
 
 // Global Error Handler
 app.use((err, req, res, next) => {

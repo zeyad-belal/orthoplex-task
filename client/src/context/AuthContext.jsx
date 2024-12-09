@@ -4,6 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { getAuthHeaders } from "./../utils/utils";
 
+const API_URL = import.meta.env.VITE_APP_API;
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
@@ -21,7 +22,7 @@ function AuthProvider({ children }) {
 
   const login = async (email, password, rememberMe) => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_APP_API}/users/login`, {
+      const response = await axios.post(`${API_URL}/users/login`, {
         email,
         password,
         rememberMe,
@@ -48,7 +49,7 @@ function AuthProvider({ children }) {
 
   const signup = async (userData) => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_APP_API}/users/signup`, userData);
+      const response = await axios.post(`${API_URL}/users/signup`, userData);
       const { newUser, token } = response.data;
 
       if (token) {
@@ -73,28 +74,28 @@ function AuthProvider({ children }) {
   };
 
   const getUserData = async (userId) => {
-    const response = await axios.get(`${import.meta.env.VITE_APP_API}/users/${userId}`, {
+    const response = await axios.get(`${API_URL}/users/${userId}`, {
       headers: getAuthHeaders(),
     });
     return response.data.user;
   };
 
   const getAllUsers = async () => {
-    const response = await axios.get(`${import.meta.env.VITE_APP_API}/users`, {
+    const response = await axios.get(`${API_URL}/users`, {
       headers: getAuthHeaders(),
     });
     return response.data;
   };
 
   const updateUserData = async (userId, data) => {
-    const response = await axios.put(`${import.meta.env.VITE_APP_API}/users/${userId}`, data, {
+    const response = await axios.put(`${API_URL}/users/${userId}`, data, {
       headers: getAuthHeaders(),
     });
     return response.data.user;
   };
 
   const getCurrentUser = async () => {
-    const response = await axios.get(`${import.meta.env.VITE_APP_API}/users/me`, {
+    const response = await axios.get(`${API_URL}/users/me`, {
       headers: getAuthHeaders(),
     });
     return response.data.user;
