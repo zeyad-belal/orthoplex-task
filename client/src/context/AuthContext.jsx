@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { getAuthHeaders } from "./../utils/utils";
+import { useNavigate } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_APP_API;
 const AuthContext = createContext();
@@ -10,6 +11,7 @@ const AuthContext = createContext();
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   // sync user data with local storage
   useEffect(() => {
@@ -19,6 +21,19 @@ function AuthProvider({ children }) {
     }
     setLoading(false);
   }, []);
+
+  const handleApiError = (error) => {
+    if (error.response?.data?.status === 500 && error.response?.data?.message === "jwt expired") {
+      Cookies.remove("token");
+      localStorage.removeItem("user");
+      setUser(null);
+      navigate("/login");
+    }
+    return {
+      success: false,
+      error: error.response?.data?.message || "Operation failed",
+    };
+  };
 
   const login = async (email, password, rememberMe) => {
     try {
@@ -33,17 +48,12 @@ function AuthProvider({ children }) {
         Cookies.set("token", token, { secure: true, sameSite: "strict" });
       }
 
-      if (rememberMe) {
         localStorage.setItem("user", JSON.stringify(user));
-      }
 
       setUser(user);
       return { success: true };
     } catch (error) {
-      return {
-        success: false,
-        error: error.response?.data?.message || "Login failed",
-      };
+      return handleApiError(error);
     }
   };
 
@@ -60,10 +70,7 @@ function AuthProvider({ children }) {
       setUser(newUser);
       return { success: true };
     } catch (error) {
-      return {
-        success: false,
-        error: error.response?.data?.message || "Signup failed",
-      };
+      return handleApiError(error);
     }
   };
 
@@ -74,31 +81,47 @@ function AuthProvider({ children }) {
   };
 
   const getUserData = async (userId) => {
-    const response = await axios.get(`${API_URL}/users/${userId}`, {
-      headers: getAuthHeaders(),
-    });
-    return response.data.user;
+    try {
+      const response = await axios.get(`${API_URL}/users/${userId}`, {
+        headers: getAuthHeaders(),
+      });
+      return response.data.user;
+    } catch (error) {
+      return handleApiError(error);
+    }
   };
 
   const getAllUsers = async () => {
-    const response = await axios.get(`${API_URL}/users`, {
-      headers: getAuthHeaders(),
-    });
-    return response.data;
+    try {
+      const response = await axios.get(`${API_URL}/users`, {
+        headers: getAuthHeaders(),
+      });
+      return response.data;
+    } catch (error) {
+      return handleApiError(error);
+    }
   };
 
   const updateUserData = async (userId, data) => {
-    const response = await axios.put(`${API_URL}/users/${userId}`, data, {
-      headers: getAuthHeaders(),
-    });
-    return response.data.user;
+    try {
+      const response = await axios.put(`${API_URL}/users/${userId}`, data, {
+        headers: getAuthHeaders(),
+      });
+      return response.data.user;
+    } catch (error) {
+      return handleApiError(error);
+    }
   };
 
   const getCurrentUser = async () => {
-    const response = await axios.get(`${API_URL}/users/me`, {
-      headers: getAuthHeaders(),
-    });
-    return response.data.user;
+    try {
+      const response = await axios.get(`${API_URL}/users/me`, {
+        headers: getAuthHeaders(),
+      });
+      return response.data.user;
+    } catch (error) {
+      return handleApiError(error);
+    }
   };
 
   return (
