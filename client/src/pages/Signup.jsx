@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Mail, Lock, User } from "lucide-react";
 import LoadingSpinner from "../components/LoadingSpinner";
-import {validateField} from "./../utils/utils";
+import { validateField } from "./../utils/utils";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -34,16 +34,6 @@ export default function Signup() {
         [name]: "",
       }));
     }
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-    Object.keys(formData).forEach((key) => {
-      const error = validateField(key, formData[key],formData);
-      if (error) newErrors[key] = error;
-    });
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
@@ -93,7 +83,7 @@ export default function Signup() {
         value={formData[name]}
         onChange={handleChange}
         onBlur={() => {
-          const error = validateField(name, formData[name] ,formData);
+          const error = validateField(name, formData[name], formData);
           if (error) {
             setErrors((prev) => ({
               ...prev,
