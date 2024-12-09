@@ -4,9 +4,10 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import About from './pages/About';
+import Cookies from "js-cookie";
 
 function PrivateRoute({ children }) {
-  const token = document.cookie.includes('token=');
+  const token = Cookies.get('token');
   return token ? children : <Navigate to="/login" />;
 }
 
